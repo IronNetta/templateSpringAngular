@@ -1,0 +1,7 @@
+<p-menubar [model]="items" [style]="menuStyles"></p-menubar>
+<p-dialog header="Register" [modal]="true" [(visible)]="registerVisible">
+  <app-register (close)="closeForm()" (_switchForm)="switchForm()"></app-register>
+</p-dialog>
+<p-dialog header="Login" [modal]="true" [(visible)]="loginVisible">
+  <app-login #loginComponent (close)="closeForm()" (_switchForm)="switchForm()"></app-login>
+</p-dialog>

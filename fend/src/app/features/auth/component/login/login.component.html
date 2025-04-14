@@ -1,0 +1,43 @@
+<form [formGroup]="loginForm" (ngSubmit)="submit()">
+  <p-floatlabel variant="on">
+    <input pInputText type="email" id="email" formControlName="email" />
+    <label for="email">Email</label>
+  </p-floatlabel>
+  @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+    <div class="error">
+      @if (loginForm.get('email')?.errors?.['required']) {
+        <small>Email is required.</small>
+      }
+      @if (loginForm.get('email')?.errors?.['email']) {
+        <small>Please enter a valid email.</small>
+      }
+    </div>
+  }
+
+  <p-floatlabel variant="on">
+    <p-password formControlName="password" id="password" [toggleMask]="true"></p-password>
+    <label for="password">Password</label>
+  </p-floatlabel>
+  @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+    <div class="error">
+      <small>Password is required.</small>
+    </div>
+  }
+  <p>Pas encore inscrit ? <span (click)="switchForm()">Inscrivez-vous</span></p>
+  <p-button
+    severity="success"
+    label="Login"
+    type="submit"
+    [disabled]="loginForm.invalid || isLoading"
+  >
+    @if (isLoading) {
+      <ng-template pTemplate="icon">
+        <i class="pi pi-spin pi-cog" style="font-size: 2rem"></i>
+      </ng-template>
+    }
+  </p-button>
+  @if (errorMessage){
+    <p class="error">{{ errorMessage }}</p>
+  }
+</form>
+

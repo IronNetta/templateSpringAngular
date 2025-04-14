@@ -1,0 +1,57 @@
+<form [formGroup]="registerForm" (ngSubmit)="submit()">
+  <p-floatlabel variant="on">
+    <input pInputText id="username" formControlName="username"/>
+    <label for="username">username</label>
+  </p-floatlabel>
+  @if (registerForm.get('username')?.invalid && registerForm.get('username')?.touched) {
+    <div class="error">
+      <small>Username is required.</small>
+    </div>
+  }
+  <p-floatlabel variant="on">
+    <input pInputText type="email" id="email" formControlName="email"/>
+    <label for="email">Email</label>
+  </p-floatlabel>
+  @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+    <div class="error">
+      <small>Email is required.</small>
+    </div>
+  }
+  <p-floatlabel variant="on">
+    <p-password formControlName="password" id="password" [toggleMask]="true"></p-password>
+    <label for="password">Password</label>
+  </p-floatlabel>
+  @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+    <div class="error">
+      <small>Password is required.</small>
+    </div>
+  }
+  <p-floatlabel variant="on">
+    <p-password formControlName="confirmPassword" id="confirmPassword" [toggleMask]="true"></p-password>
+    <label for="confirmPassword">Confirm password</label>
+  </p-floatlabel>
+  @if (registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched) {
+    <div class="error">
+      <small>Confirm Password is required.</small>
+    </div>
+  }
+  <p>Déjà inscrit ? <span (click)="switchForm()">Connectez-vous</span></p>
+  <p-button
+    severity="success"
+    label="Register"
+    type="submit"
+    [disabled]="registerForm.invalid || isLoading"
+  >
+    @if (isLoading) {
+      <ng-template pTemplate="icon">
+        <i class="pi pi-spin pi-cog" style="font-size: 2rem"></i>
+      </ng-template>
+    }
+  </p-button>
+  @if (errorMessage){
+    <p class="error">{{ errorMessage }}</p>
+  }
+  @if(isRegistered){
+    <p class="success">You are damn registered my brudah !</p>
+  }
+</form>
