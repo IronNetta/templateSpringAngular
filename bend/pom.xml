@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -11,11 +12,11 @@
     <name>template Backend</name>
 
     <modules>
-        <module>API</module>
-        <module>BLL</module>
-        <module>DAL</module>
-        <module>DL</module>
-        <module>IL</module>
+        <module>api</module>
+        <module>bll</module>
+        <module>dal</module>
+        <module>dl</module>
+        <module>il</module>
     </modules>
 
     <properties>
@@ -45,6 +46,7 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

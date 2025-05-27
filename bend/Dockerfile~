@@ -1,0 +1,35 @@
+# Étape 1 : Build avec Java 23 et Maven installé
+FROM eclipse-temurin:23-jdk AS build
+
+WORKDIR /app
+
+# Copier uniquement les fichiers nécessaires pour précharger les deps
+COPY pom.xml ./
+COPY api/pom.xml ./api/
+COPY bll/pom.xml ./bll/
+COPY dal/pom.xml ./dal/
+COPY dl/pom.xml ./dl/
+COPY il/pom.xml ./il/
+
+# Pour un projet multi-modules, utilisez validate au lieu de go-offline
+# Cela télécharge les dépendances externes sans essayer de résoudre les modules internes
+RUN mvn dependency:resolve-sources dependency:resolve -Dclassifier=javadoc -B || true
+
+# Copier les sources après le téléchargement des dépendances
+COPY . .
+
+# Compiler le projet complet d'abord pour installer les modules dans le repo local
+# puis compiler spécifiquement l'API
+RUN mvn clean install -DskipTests && \
+    mvn clean package -pl api -am -DskipTests
+
+# Étape 2 : Runtime avec Java 23 seulement
+FROM eclipse-temurin:23-jre
+
+WORKDIR /app
+
+COPY --from=build /app/api/target/*.jar app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"]

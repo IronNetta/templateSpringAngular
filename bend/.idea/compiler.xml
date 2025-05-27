@@ -16,9 +16,9 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
         </processorPath>
         <module name="dl" />
+        <module name="api" />
         <module name="bll" />
         <module name="il" />
-        <module name="api" />
         <module name="dal" />
       </profile>
     </annotationProcessing>

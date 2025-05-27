@@ -1,0 +1,58 @@
+services:
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=demo_docker
+      - POSTGRES_USER=appuser
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - myNetwork
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U appuser -d demo_docker" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./bend
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/demo_docker
+      - SPRING_DATASOURCE_USERNAME=appuser
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    networks:
+      - myNetwork
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+
+  front:
+    build:
+      context: ./fend
+      dockerfile: Dockerfile
+    ports:
+      - 4200:80
+    depends_on:
+      api:
+        condition: service_started
+    networks:
+      - myNetwork
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+
+networks:
+  myNetwork:
+    driver: bridge

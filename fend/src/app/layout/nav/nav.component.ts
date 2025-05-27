@@ -32,6 +32,7 @@ export class NavComponent {
   showDialog: boolean = false;
 
   currentUser: WritableSignal<UserTokenDto | undefined>;
+  menuStyles: { [p: string]: any } | null | undefined;
 
 
   constructor() {
